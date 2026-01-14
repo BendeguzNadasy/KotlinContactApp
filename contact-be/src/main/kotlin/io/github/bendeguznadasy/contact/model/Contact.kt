@@ -16,7 +16,7 @@ class Contact(
     val id: Long? = null,
 
     @Column(nullable = false)
-    var name: String,
+    var name: String?,
 
     var email: String? = null,
 

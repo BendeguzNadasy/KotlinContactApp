@@ -6,7 +6,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
-import java.util.UUID
+import java.util.*
 
 @Service
 class ImageStorageService {
@@ -17,14 +17,14 @@ class ImageStorageService {
         try {
             Files.createDirectories(rootLocation)
         } catch (e: IOException) {
-            throw RuntimeException("Nem sikerült létrehozni a feltöltési mappát!", e)
+            throw RuntimeException("Could not create upload directory!", e)
         }
     }
 
     fun store(file: MultipartFile): String {
         try {
             if (file.isEmpty) {
-                throw RuntimeException("Üres fájlt nem lehet feltölteni.")
+                throw RuntimeException("Failed to store empty file.")
             }
 
             // generate unique id for images
@@ -33,7 +33,7 @@ class ImageStorageService {
             val destinationFile = this.rootLocation.resolve(Paths.get(filename)).normalize().toAbsolutePath()
 
             if (!destinationFile.parent.equals(this.rootLocation.toAbsolutePath())) {
-                throw RuntimeException("Biztonsági hiba: A fájlt a mappán kívülre próbálták menteni.")
+                throw RuntimeException("Security error: Cannot store file outside of the target directory.")
             }
 
             file.inputStream.use { inputStream ->
@@ -42,7 +42,7 @@ class ImageStorageService {
 
             return filename
         } catch (e: IOException) {
-            throw RuntimeException("Hiba a fájl mentése közben.", e)
+            throw RuntimeException("Failed to store file.", e)
         }
     }
 
@@ -51,7 +51,7 @@ class ImageStorageService {
             val file = rootLocation.resolve(filename)
             Files.deleteIfExists(file)
         } catch (e: IOException) {
-            System.err.println("Nem sikerült törölni a fájlt: $filename")
+            System.err.println("Could not delete file: $filename")
         }
     }
 }

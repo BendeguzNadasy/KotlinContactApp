@@ -42,6 +42,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("org.xerial:sqlite-jdbc:3.45.1.0")
     implementation("org.hibernate.orm:hibernate-community-dialects:6.4.4.Final")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 }
 
 kotlin {

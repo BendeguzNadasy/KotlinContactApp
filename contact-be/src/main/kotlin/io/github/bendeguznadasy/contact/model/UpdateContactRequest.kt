@@ -1,12 +1,13 @@
-package io.github.bendeguznadasy.contact.model.dto
+package io.github.bendeguznadasy.contact.model
 
-import io.github.bendeguznadasy.contact.model.Contact
+import io.github.bendeguznadasy.contact.model.dto.ContactDto
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.web.multipart.MultipartFile
 
-@Schema(description = "Data Transfer Object representing contact details.")
-data class ContactDto(
+@Schema(description = "Request Object for update contact request.")
+data class UpdateContactRequest(
     @Schema(
-        description = "Full name of the contact. This field is required.",
+        description = "Full name of the contact.",
         example = "Gipsz Jakab",
     )
     var name: String?,
@@ -27,15 +28,16 @@ data class ContactDto(
         description = "Physical address.",
         example = "1234 Budapest, Dob utca 3."
     )
-    var address: String?
-)
-
-fun ContactDto.toEntity(imagePath: String? = null): Contact {
-    return Contact(
-        name = this.name ?: "",
+    var address: String?,
+    @Schema(
+        description = "Profile image of the contact.",
+    )
+    var image: MultipartFile? = null
+) {
+    fun toContactDto() = ContactDto(
+        name = this.name,
         email = this.email,
         phone = this.phone,
-        address = this.address,
-        imagePath = imagePath
+        address = this.address
     )
 }

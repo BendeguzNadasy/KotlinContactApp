@@ -36,10 +36,12 @@ class ContactService(
     fun updateContact(id: Long, contactDto: ContactDto, image: MultipartFile?): Contact {
         val existingContact = getContactById(id)
 
-        existingContact.name = contactDto.name
-        existingContact.email = contactDto.email
-        existingContact.phone = contactDto.phone
-        existingContact.address = contactDto.address
+        existingContact.apply {
+            contactDto.name.ifHasText { name = it }
+            contactDto.email.ifHasText { email = it }
+            contactDto.phone.ifHasText { phone = it }
+            contactDto.address.ifHasText { address = it }
+        }
 
         if (image != null && !image.isEmpty) {
             existingContact.imagePath?.let { oldFilename ->
@@ -58,6 +60,12 @@ class ContactService(
             imgStorageService.delete(filename)
         }
         contactRepository.delete(contact)
+    }
+
+    fun String?.ifHasText(action: (String) -> Unit) {
+        if (!this.isNullOrBlank()) {
+            action(this)
+        }
     }
 
 }

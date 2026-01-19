@@ -15,12 +15,11 @@ import callIcon from './assets/Call.png';
 import moreIcon from './assets/More.png';
 
 import editIcon from './assets/Settings.png';
-import heartIcon from './assets/Favourite.png'; // Favourite
+import heartIcon from './assets/Favourite.png';
 import trashIcon from './assets/Delete.png';
 
 import myProfilePic from './assets/idle-profile.png'
 
-// Egyszerű Avatar komponens (ha nem akarsz külön fájlt)
 const AvatarDisplay = ({ imagePath, name }) => {
     const url = getImageUrl(imagePath);
     return (
@@ -51,8 +50,7 @@ function App() {
     };
 
     const toggleMenu = (e, id) => {
-        e.stopPropagation(); // Hogy ne nyíljon meg a szerkesztő ablak (Edit Modal)
-        // Ha már nyitva van ez, akkor bezárjuk (null), amúgy kinyitjuk (id)
+        e.stopPropagation();
         if (openMenuId === id) {
             setOpenMenuId(null);
         } else {
@@ -61,8 +59,8 @@ function App() {
     };
 
     const handleMenuAction = (e, action, contact) => {
-        e.stopPropagation(); // Modal ne nyíljon meg
-        setOpenMenuId(null); // Menü bezárása kattintás után
+        e.stopPropagation();
+        setOpenMenuId(null);
 
         if (action === 'edit') {
             openEditModal(contact);
@@ -110,7 +108,6 @@ function App() {
             {/* main center side */}
             <div className="main-container">
 
-                {/* --- HEADER RÉSZ --- */}
                 <div className="header-row">
                     <h1 className="page-title">Contacts</h1>
 
@@ -210,7 +207,7 @@ function App() {
                 </div>
             </div>
 
-            {/* MODAL */}
+            {/* contact modal */}
             <ContactModal
                 show={showModal}
                 onClose={handleClose}
